@@ -1,14 +1,24 @@
 import { UserLogin } from "../models/UserLogin.mjs";
 
+const normalizePhoneNumber = (numero) => {
+  return numero.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
+};
+
 export const checkUserExists = async (req, res) => {
   try {
+    console.log("Requisição recebida para verificar usuário:", req.body);
     const { ddd, numero } = req.body;
 
     if (!ddd || !numero) {
       return res.status(400).json({ message: "DDD e número são obrigatórios" });
     }
 
-    const user = await UserLogin.findOne({ ddd, numero });
+    const normalizedNumero = normalizePhoneNumber(numero);
+    console.log("Número normalizado:", normalizedNumero);
+
+    const user = await UserLogin.findOne({ ddd, numero: normalizedNumero });
+    console.log("Usuário encontrado:", user);
+
     if (user) {
       return res.status(200).json({ message: "Usuário encontrado" });
     } else {
@@ -22,7 +32,34 @@ export const checkUserExists = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const newUser = new UserLogin(req.body);
+    const { ddd, numero, email, primeiroNome, sobrenome, cpf, senha } =
+      req.body;
+
+    if (
+      !ddd ||
+      !numero ||
+      !email ||
+      !primeiroNome ||
+      !sobrenome ||
+      !cpf ||
+      !senha
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Todos os campos são obrigatórios" });
+    }
+
+    const normalizedNumero = normalizePhoneNumber(numero);
+    const newUser = new UserLogin({
+      ddd,
+      numero: normalizedNumero,
+      email,
+      primeiroNome,
+      sobrenome,
+      cpf,
+      senha,
+    });
+
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {

@@ -1,23 +1,45 @@
 import express from "express";
-import * as userController from "../controllers/userController.mjs";
+import {
+  checkUserExists,
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+} from "../controllers/userController.mjs";
 import {
   getCidadesPorEstado,
   getEscolasEUniversidades,
+  getBairrosPorCidade,
 } from "../controllers/cidadeController.mjs";
-import cepController from "../controllers/cepController.mjs"; // Importar a rota do CEP
+import cepController from "../controllers/cepController.mjs";
 
 const router = express.Router();
 
-router.post("/users", userController.createUser);
-router.get("/users", userController.getAllUsers);
-router.get("/users/:id", userController.getUserById);
-router.put("/users/:id", userController.updateUser);
-router.delete("/users/:id", userController.deleteUser);
-router.post("/users/check", userController.checkUserExists); // Nova rota
+// Rota para verificar se o usuário existe
+router.post("/users/check", checkUserExists);
 
+// Rota para criar um novo usuário
+router.post("/users", createUser);
+
+// Rota para obter todos os usuários
+router.get("/users", getAllUsers);
+
+// Rota para obter um usuário por ID
+router.get("/users/:id", getUserById);
+
+// Rota para atualizar um usuário por ID
+router.put("/users/:id", updateUser);
+
+// Rota para deletar um usuário por ID
+router.delete("/users/:id", deleteUser);
+
+// Outras rotas
 router.get("/cidades/:estado", getCidadesPorEstado);
 router.get("/escolas-universidades", getEscolasEUniversidades);
-router.use(cepController); // Usar a rota do CEP
+router.get("/bairros", getBairrosPorCidade); // Definir a nova rota para buscar bairros
+
+// Usando o controlador de CEP
+router.use(cepController);
 
 export default router;
-

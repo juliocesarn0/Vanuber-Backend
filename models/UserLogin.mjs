@@ -4,12 +4,30 @@ const userLoginSchema = new mongoose.Schema({
   ddd: {
     type: String,
     required: true,
-    // Add additional validations if necessary
   },
   numero: {
     type: String,
     required: true,
-    // Add additional validations if necessary
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  primeiroNome: {
+    type: String,
+    required: true,
+  },
+  sobrenome: {
+    type: String,
+    required: true,
+  },
+  cpf: {
+    type: String,
+    required: true,
+  },
+  senha: {
+    type: String,
+    required: true,
   },
 });
 
