@@ -6,6 +6,8 @@ import {
   getUserById,
   updateUser,
   deleteUser,
+  createDestino,
+  addEndereco,
 } from "../controllers/userController.mjs";
 import {
   getCidadesPorEstado,
@@ -16,30 +18,22 @@ import cepController from "../controllers/cepController.mjs";
 
 const router = express.Router();
 
-// Rota para verificar se o usuário existe
+// Rotas para usuários
 router.post("/users/check", checkUserExists);
-
-// Rota para criar um novo usuário
 router.post("/users", createUser);
-
-// Rota para obter todos os usuários
 router.get("/users", getAllUsers);
-
-// Rota para obter um usuário por ID
 router.get("/users/:id", getUserById);
-
-// Rota para atualizar um usuário por ID
 router.put("/users/:id", updateUser);
-
-// Rota para deletar um usuário por ID
 router.delete("/users/:id", deleteUser);
+router.post("/destinos", createDestino);
+router.post("/enderecos", addEndereco);
 
-// Outras rotas
+// Rotas para cidades e escolas/universidades
 router.get("/cidades/:estado", getCidadesPorEstado);
 router.get("/escolas-universidades", getEscolasEUniversidades);
-router.get("/bairros", getBairrosPorCidade); // Definir a nova rota para buscar bairros
+router.get("/bairros", getBairrosPorCidade);
 
-// Usando o controlador de CEP
-router.use(cepController);
+// Rotas para CEP
+router.use("/cep", cepController);
 
 export default router;

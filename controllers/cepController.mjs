@@ -4,7 +4,7 @@ import Cep from "../models/cepModel.js"; // Importar o modelo de CEP
 
 const router = express.Router();
 
-router.get("/cep/:cep", async (req, res) => {
+router.get("/:cep", async (req, res) => {
   const { cep } = req.params;
 
   try {
